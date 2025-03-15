@@ -1,18 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class GameConfig : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+[CreateAssetMenu(fileName = "GameConfig", menuName = "PlayerConfig")]
+public class GameConfig : ScriptableObject
+{   
+    public float MoveSpeed => _moveSpeed;
+    public float MouseSensitivity => _mouseSensitivity;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [SerializeField] private float _moveSpeed = 5f;
+    [SerializeField] private float _mouseSensitivity = 2f;
+
 }
