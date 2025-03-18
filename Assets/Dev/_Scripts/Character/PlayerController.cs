@@ -2,17 +2,18 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public IInventory Inventory { get; private set; }
+
     private MovementController _movementController;
     private InputSystem _inputSystem;
     private InteractionSystem _interactionSystem;
-    private IInventory _inventory;
 
     public void Initialize(MovementController movementController, InputSystem inputSystem, InteractionSystem interactionSystem, IInventory inventory)
     {
         _movementController = movementController;
         _inputSystem = inputSystem;
         _interactionSystem = interactionSystem;
-        _inventory = inventory;
+        Inventory = inventory;
     }
 
     private void Update()
@@ -21,14 +22,24 @@ public class PlayerController : MonoBehaviour
         _interactionSystem.UpdateRaycast();
         HandleInteraction();
 
-        if (_inputSystem.IsNextItemPressed())
+        if (_inputSystem.IsMouseScrollUp())
         {
-            _inventory.NextItem();
+            Inventory.NextItem();
+        }
+        else if (_inputSystem.IsMouseScrollDown())
+        {
+            Inventory.PreviousItem();
+        }
+
+        int numberKeyPressed = _inputSystem.GetNumberKeyPressed();
+        if (numberKeyPressed != -1)
+        {
+            Inventory.SelectItem(numberKeyPressed);
         }
 
         if (_inputSystem.IsDropItemPressed())
         {
-            _inventory.DropCurrentItem();
+            Inventory.DropCurrentItem();
         }
     }
 
@@ -40,10 +51,8 @@ public class PlayerController : MonoBehaviour
         {
             if (currentInteractable is InteractableItem item)
             {
-                item.Interact(_inventory);
+                item.Interact(Inventory);
             }
         }
     }
-
-    
 }

@@ -11,7 +11,7 @@ public class GameInitializer : MonoBehaviour
 
     private void Awake()
     {
-
+        _inventoryPrefab.Initialize(_gameConfig.SlotCount, _gameConfig.SlotPrefab, _gameConfig.AnimationSpeed);
         PlayerController playerController = _characterController.GetComponent<PlayerController>();
         Transform playerTransform = playerController.transform;
         Transform cameraPivot = playerTransform.Find("Head");
@@ -19,7 +19,7 @@ public class GameInitializer : MonoBehaviour
         interactionSystem.Initialize(_gameConfig.RayCastDistance);
 
         InputSystem inputSystem = new InputSystem();
-        MovementController movementController= new MovementController(_characterController, inputSystem, _gameConfig.MoveSpeed, _gameConfig.MouseSensitivity,playerTransform, cameraPivot);
+        MovementController movementController= new MovementController(_characterController, inputSystem, _gameConfig.MoveSpeed, _gameConfig.MouseSensitivity, playerTransform, cameraPivot);
         playerController.Initialize(movementController, inputSystem, interactionSystem, _inventoryPrefab);
     }
 }

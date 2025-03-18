@@ -5,4 +5,6 @@ public interface IInventory
     InteractableItem GetCurrentItem();
     void NextItem();
     void DropCurrentItem();
+    void PreviousItem();
+    void SelectItem(int index);
 }

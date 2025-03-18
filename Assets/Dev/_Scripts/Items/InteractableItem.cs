@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Renderer))]
+
 public class InteractableItem : MonoBehaviour, IInteractable
 {
     public string itemName;
@@ -19,7 +19,7 @@ public class InteractableItem : MonoBehaviour, IInteractable
     public void Interact(IInventory inventory)
     {
         Highlight(false);
-        Debug.Log($"Предмет '{itemName}' подобран!");
+        Debug.Log($"Предмет '{itemName}' подобран");
         inventory.AddItem(this);
         gameObject.SetActive(false);
     }

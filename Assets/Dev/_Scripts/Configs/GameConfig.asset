@@ -14,3 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _moveSpeed: 2.5
   _mouseSensitivity: 1.16
+  _raycastDistance: 5
+  _slotCount: 5
+  _slotPrefab: {fileID: 6269449724747779163, guid: ffe7e3e60ad967c4e9d147f175fb59ff,
+    type: 3}

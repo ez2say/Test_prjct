@@ -4,189 +4,77 @@ using UnityEngine.UI;
 using DG.Tweening;
 
 public class Inventory : MonoBehaviour, IInventory
-{
-    [SerializeField] private int _slotCount = 5;
-    [SerializeField] private GameObject _inventorySlotPrefab;
+{   
     [SerializeField] private Transform _inventoryPanel;
+    private int _slotCount;
+    private GameObject _inventorySlotPrefab;
+    private float _animationSpeed;
 
-    private InteractableItem[] _items;
-    private List<Image> _slots = new List<Image>();
-    private int _currentIndex = -1;
+    public Transform _handPoint;
 
-    public Transform HandPoint;
+    private ItemManager _itemManager;
+    private InventoryUI _inventoryUI;
+    private HandController _handController;
 
-    private void Start()
+    public void Initialize(int slotCount, GameObject slotPrefab, float animationSpeed)
     {
-        _items = new InteractableItem[_slotCount];
-        CreateInventorySlots();
+        _slotCount = slotCount;
+        _inventorySlotPrefab = slotPrefab;
+        _animationSpeed = animationSpeed;
+        InitializeComponent();
     }
-
-    private void CreateInventorySlots()
+    private void InitializeComponent()
     {
-        foreach (Transform child in _inventoryPanel)
-        {
-            Destroy(child.gameObject);
-        }
-
-        _slots.Clear();
-
-        for (int i = 0; i < _slotCount; i++)
-        {
-            GameObject slot = Instantiate(_inventorySlotPrefab, _inventoryPanel);
-            Image slotImage = slot.GetComponentInChildren<Image>();
-            if (slotImage != null)
-            {
-                _slots.Add(slotImage);
-            }
-        }
-    }
-
-    public void AddItem(InteractableItem item)
-    {
-        for (int i = 0; i < _slotCount; i++)
-        {
-            if (_items[i] == null)
-            {
-                _items[i] = item;
-                _currentIndex = i;
-
-                UpdateUI();
-                UpdateUIWithAnimation(-1, _currentIndex);
-                UpdateHand();
-
-                Debug.Log($"Предмет '{item.itemName}' добавлен в слот {i}.");
-                return;
-            }
-        }
-
-        Debug.Log("Инвентарь полон!");
-    }
-
-    public void RemoveItem(InteractableItem item)
-    {
-        for (int i = 0; i < _slotCount; i++)
-        {
-            if (_items[i] == item)
-            {
-                _items[i] = null;
-
-                if (i == _currentIndex)
-                {
-                    _currentIndex = -1;
-                }
-
-                UpdateUI();
-                return;
-            }
-        }
+        _itemManager = new ItemManager(_slotCount);
+        _inventoryUI = new InventoryUI(_inventoryPanel, _inventorySlotPrefab, _slotCount, _animationSpeed);
+        _handController = new HandController(_handPoint, _animationSpeed);
     }
 
     public InteractableItem GetCurrentItem()
     {
-        if (_currentIndex >= 0 && _currentIndex < _slotCount && _items[_currentIndex] != null)
-        {
-            return _items[_currentIndex];
-        }
-        return null;
+        return _itemManager.GetCurrentItem();
+    }
+
+    public void AddItem(InteractableItem item)
+    {
+        _itemManager.AddItem(item);
+        _inventoryUI.UpdateUI(_itemManager.GetItems());
+        _handController.UpdateHand(_itemManager.GetCurrentItem());
+    }
+
+    public void RemoveItem(InteractableItem item)
+    {
+        _itemManager.RemoveItem(item);
+        _inventoryUI.UpdateUI(_itemManager.GetItems());
+        _handController.UpdateHand(_itemManager.GetCurrentItem());
     }
 
     public void NextItem()
     {
-        if (_items.Length == 0) return;
-
-        int startIndex = _currentIndex;
-        int nextIndex = _currentIndex;
-
-        do
-        {
-            nextIndex = (nextIndex + 1) % _slotCount;
-        } while (_items[nextIndex] == null && nextIndex != startIndex);
-
-        if (_items[nextIndex] != null)
-        {
-            int previousIndex = _currentIndex;
-            _currentIndex = nextIndex;
-
-            UpdateUIWithAnimation(previousIndex, _currentIndex);
-            UpdateHand();
-        }
+        _itemManager.NextItem();
+        _inventoryUI.HighlightSlot(_itemManager.GetCurrentIndex());
+        _handController.UpdateHand(_itemManager.GetCurrentItem());
     }
 
-    private void UpdateUIWithAnimation(int previousIndex, int currentIndex)
+    public void SelectItem(int index)
     {
-        for (int i = 0; i < _slots.Count; i++)
-        {
-            if (i == currentIndex)
-            {
-                Image slot = _slots[i];
-                slot.transform.DOScale(1.2f, 0.2f).SetEase(Ease.OutBack);
-                slot.color = Color.white;
-            }
-            else if (i == previousIndex)
-            {
-                Image slot = _slots[i];
-                slot.transform.DOScale(1f, 0.2f).SetEase(Ease.InBack);
-                slot.color = new Color(1, 1, 1, 2f);
-            }
-        }
+        _itemManager.SelectItem(index);
+        _inventoryUI.HighlightSlot(_itemManager.GetCurrentIndex());
+        _handController.UpdateHand(_itemManager.GetCurrentItem());
     }
 
-    private void UpdateUI()
+    public void PreviousItem()
     {
-        for (int i = 0; i < _slots.Count; i++)
-        {
-            if (_items[i] != null)
-            {
-                _slots[i].sprite = _items[i].itemIcon;
-                _slots[i].color = Color.white;
-            }
-            else
-            {
-                _slots[i].sprite = _inventorySlotPrefab.GetComponentInChildren<Image>().sprite;
-                _slots[i].color = Color.white;
-            }
-        }
-    }
-
-    private void UpdateHand()
-    {
-        if (HandPoint.childCount > 0)
-        {
-            Transform oldItem = HandPoint.GetChild(0);
-            oldItem.DOScale(0, 0.2f).OnComplete(() => Destroy(oldItem.gameObject));
-        }
-
-        var currentItem = GetCurrentItem();
-        if (currentItem != null)
-        {
-            GameObject itemInstance = Instantiate(currentItem.gameObject, HandPoint);
-
-            Rigidbody rb = itemInstance.GetComponent<Rigidbody>();
-            if (rb != null)
-            {
-                rb.isKinematic = true;
-            }
-
-            itemInstance.transform.localPosition = Vector3.zero;
-            itemInstance.transform.localRotation = Quaternion.identity;
-
-            itemInstance.transform.localScale = Vector3.zero;
-            itemInstance.transform.DOScale(1, 0.2f).SetEase(Ease.OutBack);
-
-            itemInstance.SetActive(true);
-        }
+        _itemManager.PreviousItem();
+        _inventoryUI.HighlightSlot(_itemManager.GetCurrentIndex());
+        _handController.UpdateHand(_itemManager.GetCurrentItem());
     }
 
     public void DropCurrentItem()
     {
-        var currentItem = GetCurrentItem();
+        var currentItem = _itemManager.GetCurrentItem();
         if (currentItem != null)
         {
-            if (HandPoint.childCount > 0)
-            {
-                Destroy(HandPoint.GetChild(0).gameObject);
-            }
-
             RemoveItem(currentItem);
 
             GameObject droppedItem = Instantiate(currentItem.gameObject, Camera.main.transform.position + Camera.main.transform.forward * 2, Quaternion.identity);

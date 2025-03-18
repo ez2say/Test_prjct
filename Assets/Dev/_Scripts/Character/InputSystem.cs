@@ -22,13 +22,30 @@ public class InputSystem
         return Input.GetKeyDown(KeyCode.E);
     }
 
-    public bool IsNextItemPressed()
-    {
-        return Input.GetKeyDown(KeyCode.Q);
-    }
-
     public bool IsDropItemPressed()
     {
         return Input.GetMouseButtonDown(1);
+    }
+
+    public bool IsMouseScrollUp()
+    {
+        return Input.GetAxis("Mouse ScrollWheel") > 0;
+    }
+
+    public bool IsMouseScrollDown()
+    {
+        return Input.GetAxis("Mouse ScrollWheel") < 0;
+    }
+
+    public int GetNumberKeyPressed()
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1 + i))
+            {
+                return i;
+            }
+        }
+        return -1;
     }
 }
