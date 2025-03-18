@@ -1,0 +1,120 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &478464863379650867
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 05fc53d48d4064a41ae080b16db5ceb0,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.7905084
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 05fc53d48d4064a41ae080b16db5ceb0,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.8521935
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 05fc53d48d4064a41ae080b16db5ceb0,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -3.373111
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 05fc53d48d4064a41ae080b16db5ceb0,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 05fc53d48d4064a41ae080b16db5ceb0,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 05fc53d48d4064a41ae080b16db5ceb0,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 05fc53d48d4064a41ae080b16db5ceb0,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 05fc53d48d4064a41ae080b16db5ceb0,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 05fc53d48d4064a41ae080b16db5ceb0,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 05fc53d48d4064a41ae080b16db5ceb0,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 05fc53d48d4064a41ae080b16db5ceb0,
+        type: 3}
+      propertyPath: m_Name
+      value: Coin
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 05fc53d48d4064a41ae080b16db5ceb0,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1466351497793576926}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 05fc53d48d4064a41ae080b16db5ceb0,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6565957096211224055}
+  m_SourcePrefab: {fileID: 100100000, guid: 05fc53d48d4064a41ae080b16db5ceb0, type: 3}
+--- !u!1 &748354637785121890 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 05fc53d48d4064a41ae080b16db5ceb0,
+    type: 3}
+  m_PrefabInstance: {fileID: 478464863379650867}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &1466351497793576926
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 748354637785121890}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.15066743, y: 0.020896897, z: 0.15430379}
+  m_Center: {x: -0.005071163, y: 9.313226e-10, z: 0.00085937977}
+--- !u!114 &6565957096211224055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 748354637785121890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d95ab5b6cfa0ea41b63a59a03d07343, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemName: Coin
+  itemIcon: {fileID: 21300000, guid: 6ff1f41b224e09e4da352a5cbd693d06, type: 3}
+  outlineMaterial: {fileID: 2100000, guid: 6d0df9594777f444599d4ef7cf8f5454, type: 2}

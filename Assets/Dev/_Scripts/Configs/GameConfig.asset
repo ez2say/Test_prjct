@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 098e1dd44cdd7c044b22e8b8419d9a52, type: 3}
   m_Name: GameConfig
   m_EditorClassIdentifier: 
-  _moveSpeed: 5
-  _mouseSensitivity: 2
+  _moveSpeed: 2.5
+  _mouseSensitivity: 1.16

@@ -16,4 +16,19 @@ public class InputSystem
     {
         return Input.GetAxis("Mouse Y");
     }
+
+    public bool IsInteractPressed()
+    {
+        return Input.GetKeyDown(KeyCode.E);
+    }
+
+    public bool IsNextItemPressed()
+    {
+        return Input.GetKeyDown(KeyCode.Q);
+    }
+
+    public bool IsDropItemPressed()
+    {
+        return Input.GetMouseButtonDown(1);
+    }
 }
