@@ -1,18 +1,18 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using DG.Tweening;
 
-
-public class HandController : MonoBehaviour
+public class HandController
 {
     private Transform _handPoint;
     private float _animationSpeed;
+    private ObjectPool<InteractableItem> _itemPool;
 
-    public HandController(Transform handPoint, float animationSpeed)
+    public HandController(Transform handPoint, float animationSpeed, ObjectPool<InteractableItem> itemPool)
     {
         _handPoint = handPoint;
         _animationSpeed = animationSpeed;
+        _itemPool = itemPool;
     }
 
     public void UpdateHand(InteractableItem currentItem)
@@ -20,26 +20,25 @@ public class HandController : MonoBehaviour
         if (_handPoint.childCount > 0)
         {
             Transform oldItem = _handPoint.GetChild(0);
-            oldItem.DOScale(0, _animationSpeed).OnComplete(() => Destroy(oldItem.gameObject));
+            InteractableItem oldInteractable = oldItem.GetComponent<InteractableItem>();
+
+            oldItem.DOScale(0, _animationSpeed).OnComplete(() =>
+            {
+                oldItem.SetParent(_itemPool._poolContainer);
+                _itemPool.ReturnObject(oldInteractable);
+            });
         }
 
         if (currentItem != null)
         {
-            GameObject itemInstance = Instantiate(currentItem.gameObject, _handPoint);
+            currentItem.transform.SetParent(_handPoint);
+            currentItem.transform.localPosition = Vector3.zero;
+            currentItem.transform.localRotation = Quaternion.identity;
 
-            Rigidbody rb = itemInstance.GetComponent<Rigidbody>();
-            if (rb != null)
-            {
-                rb.isKinematic = true;
-            }
+            currentItem.gameObject.SetActive(true);
 
-            itemInstance.transform.localPosition = Vector3.zero;
-            itemInstance.transform.localRotation = Quaternion.identity;
-
-            itemInstance.transform.localScale = Vector3.zero;
-            itemInstance.transform.DOScale(1, _animationSpeed).SetEase(Ease.OutBack);
-
-            itemInstance.SetActive(true);
+            currentItem.transform.localScale = Vector3.zero;
+            currentItem.transform.DOScale(1, _animationSpeed).SetEase(Ease.OutBack);
         }
     }
 }

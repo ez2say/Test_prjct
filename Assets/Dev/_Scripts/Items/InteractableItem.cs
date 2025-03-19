@@ -16,12 +16,17 @@ public class InteractableItem : MonoBehaviour, IInteractable
         _originalMaterial = _renderer.material;
     }
 
+    public void ResetState()
+    {
+        _renderer.material = _originalMaterial;
+        gameObject.SetActive(false);
+    }
+
     public void Interact(IInventory inventory)
     {
         Highlight(false);
         Debug.Log($"Предмет '{itemName}' подобран");
         inventory.AddItem(this);
-        gameObject.SetActive(false);
     }
 
     public void Highlight(bool enable)
